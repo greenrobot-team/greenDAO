@@ -16,11 +16,11 @@
 
 package org.greenrobot.greendao;
 
-import java.util.Collection;
-
 import org.greenrobot.greendao.internal.SqlUtils;
 import org.greenrobot.greendao.query.WhereCondition;
 import org.greenrobot.greendao.query.WhereCondition.PropertyCondition;
+
+import java.util.Collection;
 
 /**
  * Meta data describing a property mapped to a database column; used to create WhereCondition object used by the query builder.
@@ -42,13 +42,23 @@ public class Property {
         this.columnName = columnName;
     }
 
-    /** Creates an "equal ('=')" condition  for this property. */
+    /**
+     * Creates an "equal ('=')" condition for this property, or if value is null {@link #isNull()}.
+     */
     public WhereCondition eq(Object value) {
+        if (value == null) {
+            return isNull();
+        }
         return new PropertyCondition(this, "=?", value);
     }
 
-    /** Creates an "not equal ('<>')" condition  for this property. */
+    /**
+     * Creates a "not equal ('<>')" condition  for this property, or if value is null {@link #isNotNull()}.
+     */
     public WhereCondition notEq(Object value) {
+        if (value == null) {
+            return isNotNull();
+        }
         return new PropertyCondition(this, "<>?", value);
     }
 
